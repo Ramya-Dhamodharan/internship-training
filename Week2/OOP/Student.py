@@ -21,7 +21,6 @@ class Student:
 student1 = Student("Ramya", "A")   
 student2 = Student("Priya", "B")    
 
-print("===== STUDENT CLASS =====")
 
 student1.display_info()             
 student2.display_info()            
