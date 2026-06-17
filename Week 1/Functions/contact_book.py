@@ -28,21 +28,4 @@ def list_contacts():
 
 
 
-print("========== CONTACT BOOK ==========")
-print("1. Add contact")
-print("2. Find contact")
-print("3. List all contacts")
 
-choice = input("Choose an option (1/2/3): ")
-
-if choice == "1":
-    name  = input("Enter name: ")
-    phone = input("Enter phone: ")
-    add_contact(name, phone)
-elif choice == "2":
-    name = input("Enter name to search: ")
-    find_contact(name)
-elif choice == "3":
-    list_contacts()
-else:
-    print("Invalid option.")
