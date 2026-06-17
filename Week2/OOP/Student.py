@@ -18,22 +18,7 @@ class Student:
 
 
 
-student1 = Student("Ramya", "A")   
-student2 = Student("Priya", "B")    
 
-
-student1.display_info()             
-student2.display_info()            
-
-student1.study()                   
-student2.study()                    
-
-
-print(f"{student1.name}'s grade: {student1.grade}")
-
-
-student2.grade = "A"
-print(f"{student2.name} improved to: {student2.grade}")
 
 
 

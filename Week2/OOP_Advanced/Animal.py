@@ -33,15 +33,3 @@ class Cat(Animal):
     def __str__(self):            
         return  f"Cat named {self.name} {self.color}"
 
-dog1 = Dog("Rex", "Labrador")
-cat1 = Cat("Whiskers", "Black")
-dog2 = Dog("Buddy", "Beagle")
-
-print(dog1)       
-print(cat1) 
-dog1.speak()       
-cat1.speak()       
-
-animals = [dog1, cat1, dog2]   
-for animal in animals:
-    animal.speak()            
