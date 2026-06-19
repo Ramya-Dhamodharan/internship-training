@@ -1,4 +1,7 @@
 from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
+from pydantic import BaseModel
+
 
 app = FastAPI()
 
@@ -12,7 +15,7 @@ def say_hello(name: str):
 
 @app.get("/Hello/{name}/{Password}")
 def test(name:str, password=1234):
-    return{"message:"f"Hello {name}."}
+    return{"message":f"Hello {name}."}
 
 
 students = {}
@@ -51,3 +54,77 @@ def delete_student(student_id: int):
         del students[student_id]
         return {"message": "Student deleted successfully"}
     return {"message": "Student not found"}
+
+
+
+#-----------------
+#      Task
+#-----------------
+
+
+
+
+class TaskCreate(BaseModel):
+    title: str
+    done: bool
+
+
+class TaskResponse(BaseModel):
+    id: int
+    title: str
+    done: bool
+
+
+tasks = {}
+next_id = 1
+
+
+@app.post("/tasks", status_code=201)
+def create_task(task: TaskCreate):
+    global next_id
+    task_data = {          
+        "id": next_id,
+        "title": task.title,
+        "done": task.done
+    }
+    tasks[next_id] = task_data
+    next_id += 1
+    return task_data
+
+
+@app.get("/tasks")
+def get_tasks():
+    return {"tasks": list(tasks.values())}
+
+
+@app.get("/tasks/{id}")
+def get_task(id: int):
+    if id not in tasks:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Task with id {id} not found."
+        )
+    return tasks[id]
+
+
+@app.put("/tasks/{id}")
+def update_task(id: int, task: TaskCreate):   
+    if id not in tasks:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Task with id {id} not found."
+        )
+    tasks[id]["title"] = task.title
+    tasks[id]["done"] = task.done
+    return tasks[id]
+
+
+@app.delete("/tasks/{id}")
+def delete_task(id: int):
+    if id not in tasks:
+        raise HTTPException(
+            status_code=404,
+            detail=f"Task with id {id} not found."
+        )
+    deleted = tasks.pop(id)
+    return {"message": f"Task '{deleted['title']}' deleted successfully."}
