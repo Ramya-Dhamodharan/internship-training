@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./Week 1/Functions"
+    ]
+}
