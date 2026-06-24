@@ -41,3 +41,25 @@ sorted_users = session.query(User).order_by(User.age.desc()).all()
 for user in sorted_users:
     print(f"{user.name} — age {user.age}")
 
+ramya = session.query(User).filter(User.name == "Ramya").first()
+print(f"{ramya.name}'s posts:")
+for post in ramya.posts: 
+    print(f"{post.title}")
+
+user_to_update = session.query(User).filter(User.name == "Ravi").first()
+print(f"Before: {user_to_update.name}, age={user_to_update.age}")
+user_to_update.age = 25      
+session.commit()            
+print(f"After:  {user_to_update.name}, age={user_to_update.age}")
+
+post_to_delete = session.query(Post).filter(Post.title == "ORM vs Raw SQL").first()
+print(f"Deleting: {post_to_delete}")
+session.delete(post_to_delete)
+session.commit()
+print("Deleted!")
+
+remaining = session.query(Post).all()
+print(f"Remaining posts: {remaining}")
+
+session.close()
+print("\n Session Cloased")
