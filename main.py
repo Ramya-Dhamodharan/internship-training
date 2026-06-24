@@ -1,5 +1,5 @@
 import sys
-sys.path.append('Week 1/Functions')
+sys.path.append('Week1/Functions')
 sys.path.append('Week2/OOP')
 sys.path.append('Week2/OOP_Advanced')
 
