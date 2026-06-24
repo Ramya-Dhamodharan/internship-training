@@ -25,17 +25,35 @@ students = {}
 def get_student(student_id: int):
     return students.get(student_id, "Student not found")
 
+class StudentCreate(BaseModel):
+    name: str
+    age: int
 
 
-@app.post("/students/{student_id}")
-def create_student(student_id: int, name: str, age: int):
-    students[student_id] = {"name": name, "age": age}
-    return {"message": "Student added successfully"}
+@app.post("/students", status_code=201)
+def create_student(student: StudentCreate):
+    global next_id
+
+    student_data = {
+        "id": next_id,
+        "name": student.name,
+        "age": student.age
+    }
+
+    students[next_id] = student_data
+    next_id += 1
+
+    return student_data
+
 
 
 @app.put("/students/{student_id}")
 def update_student(student_id: int, name: str, age: int):
-    students[student_id] = {"name": name, "age": age}
+    students[student_id] = {
+        "id": student_id,
+        "name": name,
+        "age": age
+    }
     return {"message": "Student updated successfully"}
 
 
@@ -76,7 +94,7 @@ class TaskResponse(BaseModel):
 
 
 tasks = {}
-next_id = 1
+next_id = 101
 
 
 @app.post("/tasks", status_code=201)
