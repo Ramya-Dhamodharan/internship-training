@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Day 15 — WebSocket & SSE</title>
+    <style>
+        body { font-family: Arial; padding: 20px; max-width: 800px; }
+        .box { border: 1px solid #ccc; padding: 15px;
+               margin: 20px 0; border-radius: 8px; }
+        #messages, #sse-output {
+            height: 150px; overflow-y: auto;
+            background: #f5f5f5; padding: 10px;
+            border-radius: 4px; margin-top: 10px;
+        }
+        input { padding: 8px; width: 300px; }
+        button { padding: 8px 16px; margin: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Day 15 — Real-time Communication</h1>
+
+    <div class="box">
+        <h2>WebSocket Echo — /ws</h2>
+        <input type="text" id="ws-input" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+        <button onclick="connectWS()">Connect</button>
+        <div id="messages"></div>
+    </div>
+
+    <div class="box">
+        <h2>SSE Live Clock — /events/clock</h2>
+        <button onclick="startSSE()">Start</button>
+        <button onclick="stopSSE()">Stop</button>
+        <div id="sse-output"></div>
+    </div>
+
+    <script>
+        let ws;
+        let eventSource;
+
+        function connectWS() {
+            ws = new WebSocket("ws://localhost:8000/ws");
+            ws.onopen = () => addMsg("✅ Connected!");
+            ws.onmessage = (e) => addMsg(e.data);
+            ws.onclose = () => addMsg("❌ Disconnected.");
+        }
+
+        function sendMessage() {
+            const input = document.getElementById("ws-input");
+            if (!ws || ws.readyState !== WebSocket.OPEN) {
+                addMsg("❌ Click Connect first!");
+                return;
+            }
+            if (input.value) {
+                ws.send(input.value);
+                addMsg("You: " + input.value);
+                input.value = "";
+            }
+        }
+
+        function addMsg(msg) {
+            const div = document.getElementById("messages");
+            div.innerHTML += `<div>${msg}</div>`;
+            div.scrollTop = div.scrollHeight;
+        }
+
+        function startSSE() {
+            eventSource = new EventSource("/events/clock");
+            eventSource.onmessage = (e) => {
+                const div = document.getElementById("sse-output");
+                div.innerHTML += `<div>${e.data}</div>`;
+                div.scrollTop = div.scrollHeight;
+            };
+        }
+
+        function stopSSE() {
+            if (eventSource) eventSource.close();
+            document.getElementById("sse-output").innerHTML += "<div>⏹ Stopped</div>";
+        }
+
+        // SSE only auto start
+        startSSE();
+    </script>
+</body>
+</html>
