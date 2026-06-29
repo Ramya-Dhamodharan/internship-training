@@ -11,6 +11,11 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from database import Base
 import models 
+from dotenv import load_dotenv
+
+load_dotenv()
+
+config.set_main_option("sqlalchemy.url", os.getenv("DATABASE_URL"))
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
