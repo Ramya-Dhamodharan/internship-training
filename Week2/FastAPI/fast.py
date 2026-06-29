@@ -81,7 +81,6 @@ def delete_student(student_id: int):
 
 
 
-
 class TaskCreate(BaseModel):
     title: str
     done: bool
