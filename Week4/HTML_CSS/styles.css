@@ -118,6 +118,7 @@ nav a:hover {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    object-fit: cover; 
     box-shadow: 0 4px 16px rgba(43,108,176,0.2);
 }
 
@@ -132,6 +133,7 @@ nav a:hover {
     text-align: justify;
     font-size: 1rem;
 }
+
 
 /* ─── Skills ─── */
 .skills-grid {
@@ -151,8 +153,6 @@ nav a:hover {
     transition: all 0.3s;
     text-align: center;
 }
-
-
 
 .skill-card:hover {
     transform: translateY(-4px);
